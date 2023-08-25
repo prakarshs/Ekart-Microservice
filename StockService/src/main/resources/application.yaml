@@ -13,4 +13,6 @@ spring:
       ddl-auto: update
   application:
     name: STOCK-SERVICE
+  config:
+    import: configserver:http://localhost:9296
 

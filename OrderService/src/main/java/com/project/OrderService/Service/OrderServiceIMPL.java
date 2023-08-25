@@ -35,7 +35,7 @@ public class OrderServiceIMPL implements OrderService{
         Stock stock;
         Order order = null;
         try {
-            stock = restTemplate.getForObject("http://localhost:8080/stocks/show/"+orderCartRequest.getStockId(),Stock.class);
+            stock = restTemplate.getForObject("http://STOCK-SERVICE/stocks/show/"+orderCartRequest.getStockId(),Stock.class);
         }catch (Exception e)
         {
             throw new CustomError("Stock Not Found","Try With A Different StockId");
@@ -73,7 +73,7 @@ public class OrderServiceIMPL implements OrderService{
         Order order = orderRepository.findById(orderRequest.getOrderId()).orElseThrow(()->new CustomError("Cart Item Does Not Exist.","Try With A Different ID"));
         log.info("CHECKING FOR STOCK...");
         stockService.reduce(order.getStockId(), order.getOrderQuantity());
-        Stock stock = restTemplate.getForObject("http://localhost:8080/stocks/show/"+order.getStockId(),Stock.class);
+        Stock stock = restTemplate.getForObject("http://STOCK-SERVICE/stocks/show/"+order.getStockId(),Stock.class);
         assert stock != null;
         order.setOrderAmount(order.getOrderQuantity()*stock.getStockPrice());
         orderRepository.save(order);
@@ -91,7 +91,7 @@ public class OrderServiceIMPL implements OrderService{
     public ResponseOrderDetails showOrder(Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(()->new CustomError("The OrderId Doesnt Exist","Try A Different OrderId"));
         if(order!=null){log.info("ORDER FOUND!");}else{log.info("ORDER NOT FOUND.");}
-        Stock stock = restTemplate.getForObject("http://localhost:8080/stocks/show/"+order.getStockId(),Stock.class);
+        Stock stock = restTemplate.getForObject("http://STOCK-SERVICE/stocks/show/"+order.getStockId(),Stock.class);
 
         StockDetails stockDetails = StockDetails.builder()
                 .stockMessage("Here's Stock Information :")

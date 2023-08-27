@@ -2,6 +2,7 @@ package com.project.StockService.Services;
 
 import com.project.StockService.Entities.Stock;
 import com.project.StockService.Errors.CustomError;
+import com.project.StockService.Models.StockData;
 import com.project.StockService.Models.StockRequest;
 import com.project.StockService.Models.StockResponse;
 import com.project.StockService.Repositories.StockRepository;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -75,5 +78,14 @@ public class StockServiceIMPL implements StockService {
                 .stockQuantity(stock.getStockQuantity())
                 .stockTime(stock.getStockTime())
                 .build();
+    }
+
+    @Override
+    public List<StockData> showData() {
+        return stockRepository
+                .findAll()
+                .stream()
+                .map(stock -> new StockData(stock.getStockId(), stock.getStockName()))
+                .collect(Collectors.toList());
     }
 }

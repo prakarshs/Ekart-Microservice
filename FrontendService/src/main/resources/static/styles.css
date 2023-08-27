@@ -328,6 +328,57 @@ label {
   align-items: center;
 }
 
+/* Your existing dropdown styles */
+
+.dropdown-field {
+    position: relative;
+}
+
+.dropdown-label {
+    cursor: pointer;
+}
+
+
+#stockIdInput {
+cursor: pointer;
+}
+
+.dropdown-option {
+    color: #5469d4;
+    font-weight: 645;
+    /* Set the blue font color */
+}
+
+#dropdown-box {
+
+    top: 100%;
+    left: 0;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    max-height: 200px;
+    overflow-y: auto;
+    width: 100%; /* Make the dropdown width match the input width */
+}
+
+.dropdown-option {
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.dropdown-option:hover {
+    background-color: #ddd;
+}
+
+.dropdown-option:hover, .dropdown-option:focus {
+    outline: none;
+}
+
+.dropdown-option:active {
+    background-color: #ccc;
+}
 
 
 .field input {

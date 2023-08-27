@@ -41,6 +41,7 @@ Our project's core lies in **Maven Spring Boot** and the FrontEnd is built on va
 * ![JavaScript]
 * ![Docker]
 * ![Apache]
+* ![MySql]  
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -79,6 +80,7 @@ Project Link: [Ekart-Microservice](https://github.com/prakarshs/Ekart-Microservi
 [JavaScript]: https://img.shields.io/badge/JavaScript-FFEA00?style=for-the-badge&logo=javaScript&logoColor=black
 [Docker]: https://img.shields.io/badge/Docker-0096FF?style=for-the-badge&logo=docker&logoColor=white
 [Apache]: https://img.shields.io/badge/Apache-DE3163?style=for-the-badge&logo=apache&logoColor=white
+[MySql]: https://img.shields.io/badge/MySql-F28C28?style=for-the-badge&logo=mysql&logoColor=white
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB

@@ -2,7 +2,9 @@ package com.project.OrderService.Service;
 
 import com.project.OrderService.Entities.Order;
 import com.project.OrderService.Errors.CustomError;
+import com.project.OrderService.External.Client.PaymentService;
 import com.project.OrderService.External.Client.StockService;
+import com.project.OrderService.External.Objects.PaymentRequest;
 import com.project.OrderService.External.Objects.Stock;
 import com.project.OrderService.Models.Details.OrderDetails;
 import com.project.OrderService.Models.Details.StockDetails;
@@ -26,6 +28,9 @@ public class OrderServiceIMPL implements OrderService{
     private OrderRepository orderRepository;
     @Autowired
     private StockService stockService;
+
+    @Autowired
+    private PaymentService paymentService;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -76,6 +81,21 @@ public class OrderServiceIMPL implements OrderService{
         Stock stock = restTemplate.getForObject("http://STOCK-SERVICE/stocks/show/"+order.getStockId(),Stock.class);
         assert stock != null;
         order.setOrderAmount(order.getOrderQuantity()*stock.getStockPrice());
+
+        PaymentRequest paymentRequest = PaymentRequest.builder()
+                .orderId(order.getOrderId())
+                .paymentMode(orderRequest.getPaymentMode())
+                .paymentAmount(order.getOrderAmount())
+                .build();
+        try{
+            paymentService.make(paymentRequest);
+            order.setOrderStatus("COMPLETE");}
+        catch (Exception e)
+        {
+            order.setOrderStatus("FAIL");
+            throw new CustomError("Payment Was Unsuccessful.","Try After A While");
+        }
+
         orderRepository.save(order);
 
         return OrderResponse.builder()

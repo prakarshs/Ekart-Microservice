@@ -87,8 +87,13 @@
                                 <span class="padding-bottom--15">Add Your Stock Details Here</span>
                                 <form id="stripe-login3">
                                     <div class="field padding-bottom--24">
-                                        <label for="stockId">Stock Id:</label>
-                                        <input type="number" id="stockId" required>
+                                        <label for="stockIdInput">Stock Id:</label>
+                                        <input type="text" id="stockIdInput" autocomplete="off" required>
+                                        <div id="dropdown-box">
+                                            <div class="dropdown-content" id="stockNameOptions">
+
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="field padding-bottom--24">
                                         <input type="submit" name="submit" value="Show Stock">

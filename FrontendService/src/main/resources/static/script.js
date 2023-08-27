@@ -110,11 +110,36 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (showStockForm) {
+               stockIdInput.addEventListener("click", function (event) {
+               event.preventDefault(); // Prevent default behavior of input area
+               stockNameOptions.classList.toggle("dropdown-content");
 
+                    if (stockNameOptions.classList.contains("dropdown-content")) {
+                        fetch("http://localhost:8080/stocks/showData")
+                            .then(response => response.json())
+                            .then(stockData => {
+                                console.log("inside data area");
+                                stockNameOptions.innerHTML = ""; // Clear existing options
+
+                                stockData.forEach(data => {
+                                    const option = document.createElement("div");
+                                    option.className = "dropdown-option";
+                                    option.textContent = data.stockName;
+                                    option.addEventListener("click", function () {
+                                        stockIdInput.value = data.stockId; // Set the stock ID directly from the data object
+                                        stockNameOptions.classList.remove("dropdown-content"); // Hide dropdown
+                                    });
+                                    stockNameOptions.appendChild(option);
+                                });
+                            });
+                    } else {
+                        stockNameOptions.innerHTML = ""; // Clear options when closing dropdown
+                    }
+                });
         showStockForm.addEventListener("submit", function (event) {
             event.preventDefault();
 
-            const stockId = document.getElementById("stockId").value;
+            const stockId = document.getElementById("stockIdInput").value;
             console.log("stockID: ", stockId);
 
             fetch(`http://localhost:8080/stocks/show/${stockId}`, {
@@ -148,10 +173,41 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
     if (placeOrderForm) {
-        console.log("Inside placeOrder if condition");
+
+               orderId.addEventListener("click", function (event) {
+               event.preventDefault(); // Prevent default behavior of input area
+               orderDataOptions.classList.toggle("dropdown-content");
+
+                    if (orderDataOptions.classList.contains("dropdown-content")) {
+                        fetch("http://localhost:8081/orders/showData")
+                            .then(response => response.json())
+                            .then(orderData => {
+                                console.log("inside order data area");
+                                orderDataOptions.innerHTML = ""; // Clear existing options
+
+                                orderData.forEach(data => {
+                                    const option = document.createElement("div");
+                                    option.className = "dropdown-option";
+                                    option.innerHTML =     "Stock Name: " + data.stockNameData + "<br>" +
+                                                           "Order Quantity: " + data.orderQuantityData + "<br>" +
+                                                           "Order Amount: " + data.orderAmountData + "<br>" +
+                                                           "Order Status: " + data.orderStatus;
+
+                                    option.addEventListener("click", function () {
+                                        orderId.value = data.orderId; // Set the stock ID directly from the data object
+                                        orderDataOptions.classList.toggle("dropdown-content"); // Hide dropdown
+                                    });
+                                    orderDataOptions.appendChild(option);
+                                });
+                            });
+                    } else {
+                        orderDataOptions.innerHTML = ""; // Clear options when closing dropdown
+                    }
+                });
+
+
         placeOrderForm.addEventListener("submit", function (event) {
             event.preventDefault();
-            console.log("Inside listener order if condition");
 
             const orderId = document.getElementById("orderId").value;
             const paymentMode = document.querySelector('input[name="paymentMode"]:checked').value;
@@ -263,6 +319,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     if (showOrderForm) {
+
+               orderId.addEventListener("click", function (event) {
+               event.preventDefault(); // Prevent default behavior of input area
+               orderDataOptions.classList.toggle("dropdown-content");
+
+                    if (orderDataOptions.classList.contains("dropdown-content")) {
+                        fetch("http://localhost:8081/orders/showData")
+                            .then(response => response.json())
+                            .then(orderData => {
+                                console.log("inside order data area");
+                                orderDataOptions.innerHTML = ""; // Clear existing options
+
+                                orderData.forEach(data => {
+                                    const option = document.createElement("div");
+                                    option.className = "dropdown-option";
+                                    option.innerHTML =   "Order Id: " + data.orderId + "<br>" +
+                                                         "Stock Name: " + data.stockNameData;
+
+
+                                    option.addEventListener("click", function () {
+                                        orderId.value = data.orderId; // Set the stock ID directly from the data object
+                                        orderDataOptions.classList.toggle("dropdown-content"); // Hide dropdown
+                                    });
+                                    orderDataOptions.appendChild(option);
+                                });
+                            });
+                    } else {
+                        orderDataOptions.innerHTML = ""; // Clear options when closing dropdown
+                    }
+                });
+
         showOrderForm.addEventListener("submit", function (event) {
             event.preventDefault();
 

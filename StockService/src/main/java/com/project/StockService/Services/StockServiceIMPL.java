@@ -46,7 +46,7 @@ public class StockServiceIMPL implements StockService {
     @Override
     public StockResponse reduceStock(Long stockId, Long stockQuantity) {
         log.info("CHECKING FOR STOCK-ID...");
-        Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new CustomError("The Stock With Given ID Is Not Present", "Try Entering A Different Id"));
+        Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new CustomError("The Stock With Given ID Is Not Present "+String.valueOf(stockId), "Try Entering A Different Id"));
         if(stock!=null){log.info("STOCK FOUND!");}else{log.info("STOCK NOT FOUND.");}
         if (stockQuantity < stock.getStockQuantity()) {
             stock.setStockQuantity(stock.getStockQuantity() - stockQuantity);
@@ -68,7 +68,7 @@ public class StockServiceIMPL implements StockService {
     @Override
     public StockResponse showStock(Long stockId) {
         log.info("CHECKING FOR STOCK-ID...");
-        Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new CustomError("The Stock With Given ID Is Not Present", "Try Entering A Different Id"));
+        Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new CustomError("The Stock With Given ID Is Not Present"+String.valueOf(stockId), "Try Entering A Different Id"));
         if(stock!=null){log.info("STOCK FOUND!");}else{log.info("STOCK NOT FOUND.");}
         return StockResponse.builder()
                 .message("HERE'S YOUR REQUIRED STOCK.")
@@ -82,6 +82,7 @@ public class StockServiceIMPL implements StockService {
 
     @Override
     public List<StockData> showData() {
+
         return stockRepository
                 .findAll()
                 .stream()

@@ -88,8 +88,14 @@
                                 <form id="stripe-login5">
                                     <div class="field padding-bottom--24">
                                         <label for="orderId">Order Id:</label>
-                                        <input type="number" id="orderId" required>
+                                        <input type="text" id="orderId" autocomplete="off" required>
+                                        <div id="dropdown-box">
+                                            <div class="dropdown-content" id="orderDataOptions">
+
+                                            </div>
+                                        </div>
                                     </div>
+
                                     <div class="field padding-bottom--24">
                                         <input type="submit" name="submit" value="Show Order Details">
                                     </div>

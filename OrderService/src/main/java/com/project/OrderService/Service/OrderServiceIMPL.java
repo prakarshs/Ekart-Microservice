@@ -11,6 +11,7 @@ import com.project.OrderService.Models.Details.StockDetails;
 import com.project.OrderService.Models.Requests.OrderCartRequest;
 import com.project.OrderService.Models.Requests.OrderRequest;
 import com.project.OrderService.Models.Responses.CartResponse;
+import com.project.OrderService.Models.Responses.OrderData;
 import com.project.OrderService.Models.Responses.OrderResponse;
 import com.project.OrderService.Models.Responses.ResponseOrderDetails;
 import com.project.OrderService.Repositories.OrderRepository;
@@ -20,6 +21,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Instant;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -56,6 +61,7 @@ public class OrderServiceIMPL implements OrderService{
                     .orderTime(Instant.now())
                     .orderStatus("CREATED")
                     .build();
+            order.setOrderAmount(order.getOrderQuantity()*stock.getStockPrice());
             orderRepository.save(order);
         }
         else {
@@ -74,13 +80,25 @@ public class OrderServiceIMPL implements OrderService{
     }
 
     @Override
+    public List<OrderData> showData() {
+
+        List<OrderData> orderDataList = orderRepository.findAll()
+                .stream()
+                .map(order -> new OrderData(order.getOrderId(),restTemplate.getForObject("http://STOCK-SERVICE/stocks/show/"+order.getStockId(),Stock.class).getStockName(),order.getOrderQuantity(),order.getOrderAmount(),order.getOrderStatus()))
+                .collect(Collectors.toList());
+
+        Collections.reverse(orderDataList);
+        return orderDataList;
+    }
+
+    @Override
     public OrderResponse placeOrder(OrderRequest orderRequest) {
         Order order = orderRepository.findById(orderRequest.getOrderId()).orElseThrow(()->new CustomError("Cart Item Does Not Exist.","Try With A Different ID"));
         log.info("CHECKING FOR STOCK...");
         stockService.reduce(order.getStockId(), order.getOrderQuantity());
         Stock stock = restTemplate.getForObject("http://STOCK-SERVICE/stocks/show/"+order.getStockId(),Stock.class);
         assert stock != null;
-        order.setOrderAmount(order.getOrderQuantity()*stock.getStockPrice());
+
 
         PaymentRequest paymentRequest = PaymentRequest.builder()
                 .orderId(order.getOrderId())

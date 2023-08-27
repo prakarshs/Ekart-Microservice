@@ -3,6 +3,7 @@ package com.project.OrderService.Controllers;
 import com.project.OrderService.Models.Requests.OrderCartRequest;
 import com.project.OrderService.Models.Requests.OrderRequest;
 import com.project.OrderService.Models.Responses.CartResponse;
+import com.project.OrderService.Models.Responses.OrderData;
 import com.project.OrderService.Models.Responses.OrderResponse;
 import com.project.OrderService.Models.Responses.ResponseOrderDetails;
 import com.project.OrderService.Service.OrderService;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
@@ -37,5 +40,11 @@ public class OrderController {
     public ResponseEntity<ResponseOrderDetails> show(@PathVariable("id") Long orderId)
     {
         return new ResponseEntity<>(orderService.showOrder(orderId), HttpStatus.OK);
+    }
+
+    @GetMapping("/showData")
+    public ResponseEntity<List<OrderData>> showData()
+    {
+        return new ResponseEntity<>(orderService.showData(), HttpStatus.OK);
     }
 }

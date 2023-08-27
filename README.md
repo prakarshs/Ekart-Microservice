@@ -22,7 +22,6 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Here's Demo of my Microservice project
 
 ![product-screenshot]
 

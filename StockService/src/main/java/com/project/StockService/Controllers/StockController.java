@@ -1,5 +1,6 @@
 package com.project.StockService.Controllers;
 
+import com.project.StockService.Models.StockData;
 import com.project.StockService.Models.StockRequest;
 import com.project.StockService.Models.StockResponse;
 import com.project.StockService.Services.StockService;
@@ -8,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/stocks")
@@ -30,6 +33,10 @@ public class StockController {
     public ResponseEntity<StockResponse> show(@PathVariable("id") Long stockId){
         return new ResponseEntity<>(stockService.showStock(stockId), HttpStatus.OK);
     }
+
+    @GetMapping("/showData")
+    public ResponseEntity<List<StockData>> showData(){
+        return new ResponseEntity<>(stockService.showData(), HttpStatus.OK);}
 
     @RequestMapping(method = RequestMethod.OPTIONS)
     public ResponseEntity<?> options() {

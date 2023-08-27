@@ -200,6 +200,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     if (addCartForm) {
+               stockIdInput.addEventListener("click", function (event) {
+               event.preventDefault(); // Prevent default behavior of input area
+               stockNameOptions.classList.toggle("dropdown-content");
+
+                    if (stockNameOptions.classList.contains("dropdown-content")) {
+                        fetch("http://localhost:8080/stocks/showData")
+                            .then(response => response.json())
+                            .then(stockData => {
+                                console.log("inside data area");
+                                stockNameOptions.innerHTML = ""; // Clear existing options
+
+                                stockData.forEach(data => {
+                                    const option = document.createElement("div");
+                                    option.className = "dropdown-option";
+                                    option.textContent = data.stockName;
+                                    option.addEventListener("click", function () {
+                                        stockIdInput.value = data.stockId; // Set the stock ID directly from the data object
+                                        stockNameOptions.classList.remove("dropdown-content"); // Hide dropdown
+                                    });
+                                    stockNameOptions.appendChild(option);
+                                });
+                            });
+                    } else {
+                        stockNameOptions.innerHTML = ""; // Clear options when closing dropdown
+                    }
+                });
 
 
             addCartForm.addEventListener("submit", function (event) {

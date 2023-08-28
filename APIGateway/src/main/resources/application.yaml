@@ -1,0 +1,31 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: API-GATEWAY
+  config:
+    import: configserver:http://localhost:9296
+
+  cloud:
+    gateway:
+      routes:
+        - id: STOCK-SERVICE
+          uri: lb://STOCK-SERVICE
+          predicates:
+            - Path=/stocks/**
+
+        - id: ORDER-SERVICE
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/orders/**
+
+        - id: PAYMENT-SERVICE
+          uri: lb://PAYMENT-SERVICE
+          predicates:
+            - Path=/payments/**
+
+        - id: FRONTEND-SERVICE
+          uri: lb://FRONTEND-SERVICE
+          predicates:
+            - Path=/ekart/**

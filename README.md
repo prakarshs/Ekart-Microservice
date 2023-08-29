@@ -39,6 +39,7 @@ Our project's core lies in **Maven Spring Boot** and the FrontEnd is built on va
 * ![SpringBoot]
 * ![JavaScript]
 * ![Docker]
+* ![Okta]
 * ![Apache]
 * ![MySql]  
 
@@ -86,6 +87,7 @@ Project Link: [Ekart-Microservice](https://github.com/prakarshs/Ekart-Microservi
 [React-url]: https://reactjs.org/
 [Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
 [Vue-url]: https://vuejs.org/
+[Okta]: https://img.shields.io/badge/OKTA-00008b?style=for-the-badge&logo=okta&logoColor=white
 [Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
 [Angular-url]: https://angular.io/
 [Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00

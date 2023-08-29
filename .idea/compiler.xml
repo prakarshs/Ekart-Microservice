@@ -9,6 +9,7 @@
         <module name="FrontendService" />
         <module name="ServiceRegistry" />
         <module name="ConfigServer" />
+        <module name="APIGateway" />
         <module name="OrderService" />
         <module name="StockService" />
         <module name="PaymentService" />
@@ -17,6 +18,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="APIGateway" options="-parameters" />
       <module name="ConfigServer" options="-parameters" />
       <module name="FrontendService" options="-parameters" />
       <module name="OrderService" options="-parameters" />

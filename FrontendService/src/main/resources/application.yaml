@@ -6,3 +6,4 @@ spring:
     name: FRONTEND-SERVICE
   config:
     import: configserver:http://localhost:9296
+

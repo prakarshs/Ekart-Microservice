@@ -14,18 +14,38 @@ spring:
           uri: lb://STOCK-SERVICE
           predicates:
             - Path=/stocks/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: stockCircuitBreaker
+                fallbackUri: forward:/stockServiceFallback
 
         - id: ORDER-SERVICE
           uri: lb://ORDER-SERVICE
           predicates:
             - Path=/orders/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: orderCircuitBreaker
+                fallbackUri: forward:/orderServiceFallback
 
         - id: PAYMENT-SERVICE
           uri: lb://PAYMENT-SERVICE
           predicates:
             - Path=/payments/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: paymentCircuitBreaker
+                fallbackUri: forward:/paymentServiceFallback
 
         - id: FRONTEND-SERVICE
           uri: lb://FRONTEND-SERVICE
           predicates:
             - Path=/ekart/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: frontendCircuitBreaker
+                fallbackUri: forward:/frontendServiceFallback

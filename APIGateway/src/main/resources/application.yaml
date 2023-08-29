@@ -43,9 +43,21 @@ spring:
         - id: FRONTEND-SERVICE
           uri: lb://FRONTEND-SERVICE
           predicates:
-            - Path=/ekart/**
+            - Path=/**
           filters:
             - name: CircuitBreaker
               args:
                 name: frontendCircuitBreaker
                 fallbackUri: forward:/frontendServiceFallback
+
+#      default-filters:
+#        - DedupeResponseHeader=Content-Type
+#        - SetResponseHeader=Content-Type, text/css;charset=UTF-8
+
+okta:
+  oauth2:
+    issuer: https://dev-13111923.okta.com/oauth2/default
+    audience: api://default
+    client-id: 0oab0jwce6zd4y2rI5d7
+    client-secret: i8meEZg5eSQPmDh6MmKBM6lQvHegKZO0b-JVWpA5B3ySZHcydgNU39YrY5SM4S0U
+    scopes: openid, email, profile, offline_access

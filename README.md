@@ -38,7 +38,6 @@ Our project's core lies in **Maven Spring Boot** and the FrontEnd is built on va
 
 * ![SpringBoot]
 * ![JavaScript]
-* ![Docker]
 * ![Okta]
 * ![Apache]
 * ![MySql]  

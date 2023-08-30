@@ -43,7 +43,7 @@ spring:
         - id: FRONTEND-SERVICE
           uri: lb://FRONTEND-SERVICE
           predicates:
-            - Path=/ekart/**
+            - Path=/**
           filters:
             - name: CircuitBreaker
               args:

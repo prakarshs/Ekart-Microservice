@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 
 
 @SpringBootApplication
+
 @Log4j2
 public class ApiGatewayApplication {
 
@@ -30,5 +31,6 @@ public class ApiGatewayApplication {
 				id->new Resilience4JConfigBuilder(id).circuitBreakerConfig(CircuitBreakerConfig.ofDefaults()).build()
 		);
 	}
+
 
 }

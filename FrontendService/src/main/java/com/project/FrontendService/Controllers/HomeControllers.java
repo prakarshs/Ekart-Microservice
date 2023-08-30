@@ -38,7 +38,7 @@ public class HomeControllers {
         return "showOrder";
     }
 
-    @GetMapping("")
+    @GetMapping("/home")
     public String index() {
         return "index";
     }

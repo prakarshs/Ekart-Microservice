@@ -1,6 +1,5 @@
 server:
   port: 8085
-
 spring:
   application:
     name: API-GATEWAY
@@ -50,9 +49,6 @@ spring:
                 name: frontendCircuitBreaker
                 fallbackUri: forward:/frontendServiceFallback
 
-#      default-filters:
-#        - DedupeResponseHeader=Content-Type
-#        - SetResponseHeader=Content-Type, text/css;charset=UTF-8
 
 okta:
   oauth2:

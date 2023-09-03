@@ -1,3 +1,75 @@
+.BlockUIConfirm {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 100vh;
+	width: 100vw;
+	z-index: 50;
+	display:none;
+}
+
+.blockui-mask {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #333;
+	opacity: 0.4;
+}
+
+.RowDialogBody {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 100%;
+	max-width: 400px;
+	opacity: 1;
+	background-color: white;
+	border-radius: 4px;
+}
+
+.RowDialogBody > div:not(.confirm-body) {
+	padding: 8px 10px;
+}
+
+.confirm-header {
+	width: 100%;
+	border-radius: 4px 4px 0 0;
+	font-size: 13pt;
+	font-weight: bold;
+	margin: 0;
+}
+
+.row-dialog-hdr-success {
+	border-top: 4px solid rgb(84, 105, 212);
+	border-bottom: 1px solid transparent;
+}
+
+.row-dialog-hdr-info {
+	border-top: 4px solid rgb(84, 105, 212);
+	border-bottom: 1px solid transparent;
+}
+
+.confirm-body {
+	border-top: 1px solid #ccc;
+	padding:20px 10px;
+	border-bottom: 1px solid #ccc;
+}
+
+.confirm-btn-panel {
+	width: 100%;
+}
+.row-dialog-btn {
+	cursor: pointer;
+}
+
+.btn-naked {
+	background-color: transparent;
+}
+
+
 .hamburger-menu {
   position: relative;
   /* Ensure the menu is positioned */
@@ -84,8 +156,8 @@
 
 }
 
-.menu__item:hover {
-  background-color: #CFD8DC;
+.menu__item:not(#end-session-li):hover {
+    background-color: #CFD8DC;
 }
 
 
@@ -399,6 +471,11 @@ cursor: pointer;
     rgba(0, 0, 0, 0) 0px 0px 0px 0px,
     rgba(0, 0, 0, 0) 0px 0px 0px 0px;
   cursor: pointer;
+}
+
+#end-session{
+    background-color: #D21F3C;
+    padding:
 }
 
 input[type="submit"] {

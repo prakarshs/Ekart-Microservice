@@ -6,4 +6,5 @@ import reactor.core.publisher.Mono;
 public interface GatewayService {
 
     Mono<Boolean> sendUserRequest(UserRequest userRequest);
+    Mono<Boolean> sendUserSessions(UserRequest userRequest);
 }

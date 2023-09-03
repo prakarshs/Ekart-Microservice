@@ -20,7 +20,7 @@ public class GatewayServiceIMPL implements GatewayService {
 
         this.webClient = webClientBuilder.baseUrl("http://localhost:8084/users").build();
     }
-
+    @Override
     public Mono<Boolean> sendUserRequest(UserRequest userRequest) {
         return webClient.post()
                 .uri("/add")
@@ -36,9 +36,21 @@ public class GatewayServiceIMPL implements GatewayService {
                 });
     }
 
-
-
-
+    @Override
+    public Mono<Boolean> sendUserSessions(UserRequest userRequest) {
+        return webClient.post()
+                .uri("/addSession")
+                .bodyValue(userRequest)
+                .exchangeToMono(response -> {
+                    if (response.statusCode().is2xxSuccessful()) {
+                        log.info("SESSION SENT!");
+                        return Mono.just(true);
+                    } else {
+                        log.warn("Failed to send session!");
+                        return Mono.just(false);
+                    }
+                });
+    }
 
 
 }

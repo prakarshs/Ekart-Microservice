@@ -41,9 +41,16 @@ public class SendUserController {
 
         log.info("BEFORE FETCH STATEMENT");
 
-        return gatewayService.sendUserRequest(userRequest)
-                .flatMap(res -> {
-                    if (res) {
+
+        Mono<Boolean> sendUserRequest = gatewayService.sendUserRequest(userRequest);
+        Mono<Boolean> sendUserSessions = gatewayService.sendUserSessions(userRequest); // Add the method for sending user sessions
+
+        return sendUserRequest.zipWith(sendUserSessions) // Combine the results of both calls
+                .flatMap(tuple -> {
+                    boolean userRequestResult = tuple.getT1();
+                    boolean userSessionsResult = tuple.getT2();
+
+                    if (userRequestResult && userSessionsResult) {
                         // Perform the redirection using exchange.getResponse().getHeaders().setLocation(...)
                         exchange.getResponse().setStatusCode(HttpStatus.SEE_OTHER);
                         exchange.getResponse().getHeaders().setLocation(URI.create("http://localhost:8085/ekart/home"));

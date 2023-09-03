@@ -475,7 +475,11 @@ cursor: pointer;
 
 #end-session{
     background-color: #D21F3C;
-    padding:
+}
+
+#start-session{
+    background-color: #2E8B57;
+
 }
 
 input[type="submit"] {

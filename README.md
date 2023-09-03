@@ -21,18 +21,40 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
-
 ![product-screenshot]
+Ekart is an innovative microservices project that transforms the world of online shopping. Our platform comprises four core services:
 
-Welcome to Ekart, a cutting-edge microservices project that transforms online shopping. Our platform comprises four core services: <ul><li>Stock Services <li>Order Services <li>Payment Services and <li>Frontend Services</ul> Powered by <b>Maven, Spring Boot 2.7.15, and Java 11,</b> we've adopted a <b>Database per Service</b> architecture for autonomy and scalability.
+- Stock Services
+- Order Services
+- Payment Services
+- Frontend Services
 
-Eureka ensures smooth service discovery, while Config Server centralizes configurations. <b>MySQL</b> stores data reliably, while <b>Docker and Zipkin Sleuth</b> enhance traceability. Our frontend, built with <b>HTML, CSS,</b> and <b>JavaScript,</b> offers a seamless shopping experience. <b>RestTemplate</b> and <b>OpenFeign</b> handle communication between services, making Ekart a comprehensive solution for modern commerce.
+## Microservices Architecture
+
+We've adopted a "Database per Service" architecture to provide autonomy and scalability. Microservices are being adopted widely since they offer scalability, flexibility, and the ability to develop and deploy software components independently, which accelerates innovation and agility in modern software development.
+
+## Key Features
+
+- **Cloud API Gateway (SpringGateway)**: Efficiently routes requests between services, ensuring smooth communication.
+- **Circuit Breaker (Resilience4j)**: Implemented in each service and the gateway for fault tolerance and reliability.
+- **Okta Integration**: Industry-standard security is guaranteed through Okta integration in the gateway.
+
+## Our Technology Stack
+
+- **Service Discovery**: Eureka ensures smooth service discovery.
+- **Centralized Configurations**: Config Server pulling from my github repo centralizes configurations.
+- **Data Storage**: MySQL stores data reliably.
+- **Traceability**: Docker and Zipkin Sleuth enhance traceability.
+- **Frontend**: Our frontend is built with HTML, CSS, and JavaScript, offering a seamless shopping experience.
+- **Communication**: RestTemplate, OpenFeign & WebClient in Cloud Gateway (since gateway is a WebFlux/Spring Reactive Web service) handle communication between services, making Ekart a comprehensive solution for modern commerce.
+
+
+Ekart is not just about convenience; it's also about ensuring the utmost security, scalability, and fault tolerance. With Cloud API Gateway, circuit breakers, Okta integration, and a modern tech stack, we provide an unparalleled shopping experience.
 
 
 
 
-### Built With
+## Built With
 
 Our project's core lies in **Maven Spring Boot** and the FrontEnd is built on vanilla **HTML, CSS & JavaScript.** And the communication between the services is provided by Apache Kafka.
 

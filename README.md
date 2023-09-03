@@ -28,6 +28,7 @@ Ekart is an innovative microservices project that transforms the world of online
 - Order Services
 - Payment Services
 - Frontend Services
+- User Service
 
 ## Microservices Architecture
 

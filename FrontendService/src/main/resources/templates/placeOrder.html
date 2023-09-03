@@ -42,10 +42,33 @@
         </li>
 
         <li class="menu__item field padding-bottom--24" id="end-session-li"><input id="end-session" type="submit" value="End Session"></li>
+        <li class="menu__item field padding-bottom--24" id="start-session-li"><input id="start-session" type="submit" value=" Start Session"></li>
 
 
     </ul>
 </div>
+
+<div id="BlockUIConfirm" class="BlockUIConfirm">
+    <div class="blockui-mask"></div>
+    <div class="RowDialogBody">
+        <div class="confirm-header row-dialog-hdr-success">
+            Session Confirmation
+        </div>
+        <div class="confirm-body">
+            Confirm that you wish to end/start your session?
+        </div>
+        <div class="confirm-btn-panel pull-right">
+            <div class="btn-holder pull-right">
+                <input type="submit" style="padding:5px" id="confirmSessionBtn" value="Yes, Accept" />
+                <span style="margin-right: 10px;"></span>
+                <input type="button" style="padding:5px" id="cancelButton" value="No, Cancel" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <div class="login-root">
     <div class="box-root flex-flex flex-direction--column" style="min-height: 100vh;flex-grow: 1;">
         <div class="loginbackground box-background--white padding-top--64">

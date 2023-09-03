@@ -8,6 +8,79 @@ document.addEventListener("DOMContentLoaded", function () {
     const stockNameOptions = document.getElementById("stockNameOptions");
     const stockIdInput = document.getElementById("stockIdInput");
     const tableBody = document.getElementById("tableBody");
+    const nameElement = document.getElementById('name');
+    const emailElement = document.getElementById('email');
+    const timeStartedElement = document.getElementById('time-started');
+    const endSessionButton = document.getElementById('end-session');
+
+    const startTimeKey = 'startTime';
+    const updateTimeKey = 'updateTime';
+
+    // Check if there is a start time stored in localStorage
+    let startTime = localStorage.getItem(startTimeKey);
+
+    // Initialize updateTime as true by default or use the stored value
+    let updateTime = JSON.parse(localStorage.getItem(updateTimeKey)) !== false;
+
+    // Function to update the elapsed time
+    function updateTimeElapsed() {
+        if (updateTime && startTime) {
+            const currentTime = new Date();
+            const elapsedMilliseconds = currentTime - new Date(startTime);
+            const elapsedSeconds = Math.floor(elapsedMilliseconds / 1000);
+
+            timeStartedElement.textContent = `Time Started: ${elapsedSeconds} seconds ago`;
+        }
+
+        setTimeout(updateTimeElapsed, 1000);
+    }
+
+    // Start the timer
+    updateTimeElapsed();
+
+    // Store start time in localStorage
+    if (!startTime) {
+        startTime = new Date();
+        localStorage.setItem(startTimeKey, startTime);
+    }
+
+    // Event listener for stopping the timer
+    endSessionButton.addEventListener('click', () => {
+        console.log("in the end session dialog");
+        // Display the confirmation dialog
+        const confirmDialog = document.getElementById('BlockUIConfirm');
+        confirmDialog.style.display = 'block';
+
+        // When the user clicks "Yes, Accept," perform the end session actions
+        document.getElementById('confirmSessionBtn').addEventListener('click', () => {
+            updateTime = false; // Stop updating time when the button is pressed
+            localStorage.removeItem(startTimeKey); // Clear the stored startTime
+            confirmDialog.style.display = 'none'; // Hide the confirmation dialog
+
+        document.getElementById('cancelButton').addEventListener('click', hideBlockUIConfirm);
+        });
+    });
+
+
+    function hideBlockUIConfirm() {
+                        const confirmDialog = document.getElementById('BlockUIConfirm');
+                        if (confirmDialog) {
+                            confirmDialog.style.display = 'none';
+                        }
+                    }
+
+
+
+    fetch("http://localhost:8084/users/show/")
+    .then(response => response.json())
+        .then(userData => {
+            nameElement.textContent = `${userData.userName}`;
+            emailElement.textContent = `${userData.userEmail}`;
+        })
+        .catch(error => {
+            console.error('Error fetching user data:', error);
+        });
+
 
     if (stockForm) {
         stockForm.addEventListener("submit", function (event) {

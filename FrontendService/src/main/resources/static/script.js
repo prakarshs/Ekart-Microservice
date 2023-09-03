@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const emailElement = document.getElementById('email');
     const timeStartedElement = document.getElementById('time-started');
     const endSessionButton = document.getElementById('end-session');
+    const startSessionButton = document.getElementById('start-session');
 
     const startTimeKey = 'startTime';
     const updateTimeKey = 'updateTime';
@@ -43,7 +44,8 @@ document.addEventListener("DOMContentLoaded", function () {
         startTime = new Date();
         localStorage.setItem(startTimeKey, startTime);
     }
-
+    // Start Session Button Not Visible
+    document.getElementById('start-session-li').style.display = 'none';
     // Event listener for stopping the timer
     endSessionButton.addEventListener('click', () => {
         console.log("in the end session dialog");
@@ -53,21 +55,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // When the user clicks "Yes, Accept," perform the end session actions
         document.getElementById('confirmSessionBtn').addEventListener('click', () => {
+            document.getElementById('end-session-li').style.display = 'none';
+            document.getElementById('start-session-li').style.display = 'block';
             updateTime = false; // Stop updating time when the button is pressed
             localStorage.removeItem(startTimeKey); // Clear the stored startTime
             confirmDialog.style.display = 'none'; // Hide the confirmation dialog
-
-        document.getElementById('cancelButton').addEventListener('click', hideBlockUIConfirm);
         });
+        document.getElementById('cancelButton').addEventListener('click', ()=>{
+            confirmDialog.style.display = 'none';
+        });
+
     });
 
+    startSessionButton.addEventListener('click', () => {
+            console.log("in the start session dialog");
+            // Display the confirmation dialog
+            const confirmDialog = document.getElementById('BlockUIConfirm');
+            confirmDialog.style.display = 'block';
 
-    function hideBlockUIConfirm() {
-                        const confirmDialog = document.getElementById('BlockUIConfirm');
-                        if (confirmDialog) {
-                            confirmDialog.style.display = 'none';
-                        }
-                    }
+            // When the user clicks "Yes, Accept," perform the start session actions
+            document.getElementById('confirmSessionBtn').addEventListener('click', () => {
+                document.getElementById('end-session-li').style.display = 'block';
+                document.getElementById('start-session-li').style.display = 'none';
+                startTime = new Date(); // Set a new start time
+                updateTime = true; // Start updating time when the button is pressed
+                confirmDialog.style.display = 'none'; // Hide the confirmation dialog
+            });
+            document.getElementById('cancelButton').addEventListener('click', ()=>{
+                confirmDialog.style.display = 'none';
+            });
+
+        });
 
 
 

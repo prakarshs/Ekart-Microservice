@@ -17,47 +17,47 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Sending Button Clicked Info to a function which will send to the kafka producer
     document.getElementById('home').addEventListener('click', () => {
-                interaction = 'Home Page';
-                sendUserInteractionToServer(interaction);
-            });
-     document.getElementById('addStocks').addEventListener('click', () => {
-            interaction = 'Add Stocks';
-            sendUserInteractionToServer(interaction);
-        });
-     document.getElementById('reduceStocks').addEventListener('click', () => {
-                 interaction = 'Reduce Stocks';
-                 sendUserInteractionToServer(interaction);
-             });
-     document.getElementById('showStocks').addEventListener('click', () => {
-                 interaction = 'Show Stocks';
-                 sendUserInteractionToServer(interaction);
-             });
+        interaction = 'Home Page';
+        sendUserInteractionToServer(interaction);
+    });
+    document.getElementById('addStocks').addEventListener('click', () => {
+        interaction = 'Add Stocks';
+        sendUserInteractionToServer(interaction);
+    });
+    document.getElementById('reduceStocks').addEventListener('click', () => {
+        interaction = 'Reduce Stocks';
+        sendUserInteractionToServer(interaction);
+    });
+    document.getElementById('showStocks').addEventListener('click', () => {
+        interaction = 'Show Stocks';
+        sendUserInteractionToServer(interaction);
+    });
 
 
-     document.getElementById('addCart').addEventListener('click', () => {
-            interaction = 'Add Cart';
-            sendUserInteractionToServer(interaction);
-        });
-     document.getElementById('placeOrder').addEventListener('click', () => {
-                 interaction = 'Place Order';
-                 sendUserInteractionToServer(interaction);
-             });
-     document.getElementById('showOrder').addEventListener('click', () => {
-                 interaction = 'Show Order';
-                 sendUserInteractionToServer(interaction);
-             });
+    document.getElementById('addCart').addEventListener('click', () => {
+        interaction = 'Add Cart';
+        sendUserInteractionToServer(interaction);
+    });
+    document.getElementById('placeOrder').addEventListener('click', () => {
+        interaction = 'Place Order';
+        sendUserInteractionToServer(interaction);
+    });
+    document.getElementById('showOrder').addEventListener('click', () => {
+        interaction = 'Show Order';
+        sendUserInteractionToServer(interaction);
+    });
 
 
 
     function sendUserInteractionToServer(interaction) {
-            // Make an HTTP POST request to your backend service
-            fetch('http://localhost:8086/journey', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: interaction,//plain string body
-            })
+        // Make an HTTP POST request to your backend service
+        fetch('http://localhost:8086/journey', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: interaction,//plain string body
+        })
             .then(data => {
                 console.log('Interaction sent to server:', interaction);
             })
@@ -66,11 +66,8 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-
-
     const startTimeKey = 'startTime';
     const updateTimeKey = 'updateTime';
-    console.log("here before time etc etc")
 
     // Check if there is a start time stored in localStorage
     let startTime = localStorage.getItem(startTimeKey);
@@ -91,18 +88,80 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(updateTimeElapsed, 1000);
     }
 
-    // Start the timer
-    updateTimeElapsed();
+    if (isSessionActive()) {
+            document.getElementById('end-session-li').style.display = 'block';
+            document.getElementById('start-session-li').style.display = 'none';
+            console.log("update time: ",updateTime);
+            console.log("start time: ",startTime);
+            updateTime = true;
+            updateTimeElapsed();
+            console.log('Session is active time');
+        } else {
+            document.getElementById('end-session-li').style.display = 'none';
+            document.getElementById('start-session-li').style.display = 'block';
+            console.log('Session is not active');
+        }
 
-    // Store start time in localStorage
-    if (!startTime) {
-        startTime = new Date();
-        localStorage.setItem(startTimeKey, startTime);
+
+    // Function to check if a session is active
+    function isSessionActive() {
+        return localStorage.getItem('sessionActive') === 'true';
     }
-    // Start Session Button Not Visible
-    document.getElementById('start-session-li').style.display = 'none';
-    // Event listener for stopping the timer
+
+    // Button To Start Session
+    startSessionButton.addEventListener('click', () => {
+        startSession();
+    });
+
+    // Button To End Session
     endSessionButton.addEventListener('click', () => {
+        endSession();
+    });
+
+    // Function to start a new session
+    function startSession() {
+        localStorage.setItem('sessionActive', 'true');
+        localStorage.setItem('sessionStartTime', new Date().toISOString());
+
+        interaction = 'Start Session';
+        sendUserInteractionToServer(interaction);
+
+
+        console.log("in the start session dialog");
+        // Display the confirmation dialog
+        const confirmDialog = document.getElementById('BlockUIConfirm');
+        confirmDialog.style.display = 'block';
+
+        // When the user clicks "Yes, Accept," perform the start session actions
+        document.getElementById('confirmSessionBtn').addEventListener('click', () => {
+            interaction = 'Yes Button';
+            sendUserInteractionToServer(interaction);
+
+
+            document.getElementById('end-session-li').style.display = 'block';
+            document.getElementById('start-session-li').style.display = 'none';
+            startTime = new Date(); // Set a new start time
+            localStorage.setItem(startTimeKey, startTime);// Saving start time in local storage
+            updateTime = true; // Start updating time when the button is pressed
+            updateTimeElapsed();
+            confirmDialog.style.display = 'none'; // Hide the confirmation dialog
+        });
+        document.getElementById('cancelButton').addEventListener('click', () => {
+            interaction = 'Yes Button';
+            sendUserInteractionToServer(interaction);
+
+
+            confirmDialog.style.display = 'none';
+        });
+
+        console.log('Session started');
+    }
+
+    // Function to end the session
+    function endSession() {
+        localStorage.removeItem('sessionActive');
+        localStorage.removeItem('sessionStartTime');
+
         interaction = 'End Session';
         sendUserInteractionToServer(interaction);
 
@@ -124,7 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
             localStorage.removeItem(startTimeKey); // Clear the stored startTime
             confirmDialog.style.display = 'none'; // Hide the confirmation dialog
         });
-        document.getElementById('cancelButton').addEventListener('click', ()=>{
+        document.getElementById('cancelButton').addEventListener('click', () => {
             interaction = 'No Button';
             sendUserInteractionToServer(interaction);
 
@@ -132,44 +191,14 @@ document.addEventListener("DOMContentLoaded", function () {
             confirmDialog.style.display = 'none';
         });
 
-    });
+        console.log('Session ended');
+    }
 
-    startSessionButton.addEventListener('click', () => {
-            interaction = 'Start Session';
-            sendUserInteractionToServer(interaction);
-
-
-            console.log("in the start session dialog");
-            // Display the confirmation dialog
-            const confirmDialog = document.getElementById('BlockUIConfirm');
-            confirmDialog.style.display = 'block';
-
-            // When the user clicks "Yes, Accept," perform the start session actions
-            document.getElementById('confirmSessionBtn').addEventListener('click', () => {
-                interaction = 'Yes Button';
-                sendUserInteractionToServer(interaction);
-
-
-                document.getElementById('end-session-li').style.display = 'block';
-                document.getElementById('start-session-li').style.display = 'none';
-                startTime = new Date(); // Set a new start time
-                updateTime = true; // Start updating time when the button is pressed
-                confirmDialog.style.display = 'none'; // Hide the confirmation dialog
-            });
-            document.getElementById('cancelButton').addEventListener('click', ()=>{
-                interaction = 'Yes Button';
-                sendUserInteractionToServer(interaction);
-
-
-                confirmDialog.style.display = 'none';
-            });
-
-        });
 
 
 
     fetch("http://localhost:8084/users/show")
-    .then(response => response.json())
+        .then(response => response.json())
         .then(userData => {
             nameElement.textContent = `${userData.userName}`;
             emailElement.textContent = `${userData.userEmail}`;
@@ -184,15 +213,15 @@ document.addEventListener("DOMContentLoaded", function () {
             event.preventDefault();
 
             const stockName = document.getElementById("stockName").value;
-            interaction = 'Stock Name Added: ${stockName}';
+            interaction = 'Stock Name Added: ' + stockName;
             sendUserInteractionToServer(interaction);
 
             const stockPrice = document.getElementById("stockPrice").value;
-            interaction = 'Stock Price Added: ${stockPrice} ';
+            interaction = 'Stock Price Added: ' + stockPrice;
             sendUserInteractionToServer(interaction);
 
             const stockQuantity = document.getElementById("stockQuantity").value;
-            interaction = 'Stock Quantity Added: ${stockQuantity} ';
+            interaction = 'Stock Quantity Added: ' + stockQuantity;
             sendUserInteractionToServer(interaction);
 
             const stockData = {
@@ -226,32 +255,32 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     if (reduceStockForm) {
 
-    stockIdInput.addEventListener("click", function (event) {
-                    event.preventDefault(); // Prevent default behavior of input area
-                    stockNameOptions.classList.toggle("dropdown-content");
+        stockIdInput.addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent default behavior of input area
+            stockNameOptions.classList.toggle("dropdown-content");
 
-                    if (stockNameOptions.classList.contains("dropdown-content")) {
-                        fetch("http://localhost:8080/stocks/showData")
-                            .then(response => response.json())
-                            .then(stockData => {
-                                console.log("inside data area");
-                                stockNameOptions.innerHTML = ""; // Clear existing options
+            if (stockNameOptions.classList.contains("dropdown-content")) {
+                fetch("http://localhost:8080/stocks/showData")
+                    .then(response => response.json())
+                    .then(stockData => {
+                        console.log("inside data area");
+                        stockNameOptions.innerHTML = ""; // Clear existing options
 
-                                stockData.forEach(data => {
-                                    const option = document.createElement("div");
-                                    option.className = "dropdown-option";
-                                    option.textContent = data.stockName;
-                                    option.addEventListener("click", function () {
-                                        stockIdInput.value = data.stockId; // Set the stock ID directly from the data object
-                                        stockNameOptions.classList.remove("dropdown-content"); // Hide dropdown
-                                    });
-                                    stockNameOptions.appendChild(option);
-                                });
+                        stockData.forEach(data => {
+                            const option = document.createElement("div");
+                            option.className = "dropdown-option";
+                            option.textContent = data.stockName;
+                            option.addEventListener("click", function () {
+                                stockIdInput.value = data.stockId; // Set the stock ID directly from the data object
+                                stockNameOptions.classList.remove("dropdown-content"); // Hide dropdown
                             });
-                    } else {
-                        stockNameOptions.innerHTML = ""; // Clear options when closing dropdown
-                    }
-                });
+                            stockNameOptions.appendChild(option);
+                        });
+                    });
+            } else {
+                stockNameOptions.innerHTML = ""; // Clear options when closing dropdown
+            }
+        });
 
 
         reduceStockForm.addEventListener("submit", function (event) {
@@ -292,32 +321,32 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (showStockForm) {
-               stockIdInput.addEventListener("click", function (event) {
-               event.preventDefault(); // Prevent default behavior of input area
-               stockNameOptions.classList.toggle("dropdown-content");
+        stockIdInput.addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent default behavior of input area
+            stockNameOptions.classList.toggle("dropdown-content");
 
-                    if (stockNameOptions.classList.contains("dropdown-content")) {
-                        fetch("http://localhost:8080/stocks/showData")
-                            .then(response => response.json())
-                            .then(stockData => {
-                                console.log("inside data area");
-                                stockNameOptions.innerHTML = ""; // Clear existing options
+            if (stockNameOptions.classList.contains("dropdown-content")) {
+                fetch("http://localhost:8080/stocks/showData")
+                    .then(response => response.json())
+                    .then(stockData => {
+                        console.log("inside data area");
+                        stockNameOptions.innerHTML = ""; // Clear existing options
 
-                                stockData.forEach(data => {
-                                    const option = document.createElement("div");
-                                    option.className = "dropdown-option";
-                                    option.textContent = data.stockName;
-                                    option.addEventListener("click", function () {
-                                        stockIdInput.value = data.stockId; // Set the stock ID directly from the data object
-                                        stockNameOptions.classList.remove("dropdown-content"); // Hide dropdown
-                                    });
-                                    stockNameOptions.appendChild(option);
-                                });
+                        stockData.forEach(data => {
+                            const option = document.createElement("div");
+                            option.className = "dropdown-option";
+                            option.textContent = data.stockName;
+                            option.addEventListener("click", function () {
+                                stockIdInput.value = data.stockId; // Set the stock ID directly from the data object
+                                stockNameOptions.classList.remove("dropdown-content"); // Hide dropdown
                             });
-                    } else {
-                        stockNameOptions.innerHTML = ""; // Clear options when closing dropdown
-                    }
-                });
+                            stockNameOptions.appendChild(option);
+                        });
+                    });
+            } else {
+                stockNameOptions.innerHTML = ""; // Clear options when closing dropdown
+            }
+        });
         showStockForm.addEventListener("submit", function (event) {
             event.preventDefault();
 
@@ -356,36 +385,36 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     if (placeOrderForm) {
 
-               orderId.addEventListener("click", function (event) {
-               event.preventDefault(); // Prevent default behavior of input area
-               orderDataOptions.classList.toggle("dropdown-content");
+        orderId.addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent default behavior of input area
+            orderDataOptions.classList.toggle("dropdown-content");
 
-                    if (orderDataOptions.classList.contains("dropdown-content")) {
-                        fetch("http://localhost:8081/orders/showData")
-                            .then(response => response.json())
-                            .then(orderData => {
-                                console.log("inside order data area");
-                                orderDataOptions.innerHTML = ""; // Clear existing options
+            if (orderDataOptions.classList.contains("dropdown-content")) {
+                fetch("http://localhost:8081/orders/showData")
+                    .then(response => response.json())
+                    .then(orderData => {
+                        console.log("inside order data area");
+                        orderDataOptions.innerHTML = ""; // Clear existing options
 
-                                orderData.forEach(data => {
-                                    const option = document.createElement("div");
-                                    option.className = "dropdown-option";
-                                    option.innerHTML =     "Stock Name: " + data.stockNameData + "<br>" +
-                                                           "Order Quantity: " + data.orderQuantityData + "<br>" +
-                                                           "Order Amount: " + data.orderAmountData + "<br>" +
-                                                           "Order Status: " + data.orderStatus;
+                        orderData.forEach(data => {
+                            const option = document.createElement("div");
+                            option.className = "dropdown-option";
+                            option.innerHTML = "Stock Name: " + data.stockNameData + "<br>" +
+                                "Order Quantity: " + data.orderQuantityData + "<br>" +
+                                "Order Amount: " + data.orderAmountData + "<br>" +
+                                "Order Status: " + data.orderStatus;
 
-                                    option.addEventListener("click", function () {
-                                        orderId.value = data.orderId; // Set the stock ID directly from the data object
-                                        orderDataOptions.classList.toggle("dropdown-content"); // Hide dropdown
-                                    });
-                                    orderDataOptions.appendChild(option);
-                                });
+                            option.addEventListener("click", function () {
+                                orderId.value = data.orderId; // Set the stock ID directly from the data object
+                                orderDataOptions.classList.toggle("dropdown-content"); // Hide dropdown
                             });
-                    } else {
-                        orderDataOptions.innerHTML = ""; // Clear options when closing dropdown
-                    }
-                });
+                            orderDataOptions.appendChild(option);
+                        });
+                    });
+            } else {
+                orderDataOptions.innerHTML = ""; // Clear options when closing dropdown
+            }
+        });
 
 
         placeOrderForm.addEventListener("submit", function (event) {
@@ -427,7 +456,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             tableBody.appendChild(row);
                         }
                     }
-                    })
+                })
 
                 .catch(error => {
                     console.error("Error:", error);
@@ -438,99 +467,99 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     if (addCartForm) {
-               stockIdInput.addEventListener("click", function (event) {
-               event.preventDefault(); // Prevent default behavior of input area
-               stockNameOptions.classList.toggle("dropdown-content");
+        stockIdInput.addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent default behavior of input area
+            stockNameOptions.classList.toggle("dropdown-content");
 
-                    if (stockNameOptions.classList.contains("dropdown-content")) {
-                        fetch("http://localhost:8080/stocks/showData")
-                            .then(response => response.json())
-                            .then(stockData => {
-                                console.log("inside data area");
-                                stockNameOptions.innerHTML = ""; // Clear existing options
-
-                                stockData.forEach(data => {
-                                    const option = document.createElement("div");
-                                    option.className = "dropdown-option";
-                                    option.textContent = data.stockName;
-                                    option.addEventListener("click", function () {
-                                        stockIdInput.value = data.stockId; // Set the stock ID directly from the data object
-                                        stockNameOptions.classList.remove("dropdown-content"); // Hide dropdown
-                                    });
-                                    stockNameOptions.appendChild(option);
-                                });
-                            });
-                    } else {
-                        stockNameOptions.innerHTML = ""; // Clear options when closing dropdown
-                    }
-                });
-
-
-            addCartForm.addEventListener("submit", function (event) {
-                event.preventDefault();
-                console.log("Inside listener cart if condition");
-
-
-                const stockId = document.getElementById("stockIdInput").value;
-                const orderQuantity = document.getElementById("orderQuantity").value;
-
-                const cartData = {
-                    stockId: parseInt(stockId),
-                    orderQuantity: parseInt(orderQuantity),
-                };
-
-                // Assuming you have an API endpoint to handle form submissions
-                fetch("http://localhost:8081/orders/add", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(cartData)
-                })
+            if (stockNameOptions.classList.contains("dropdown-content")) {
+                fetch("http://localhost:8080/stocks/showData")
                     .then(response => response.json())
-                    .then(data => {
-                        showNotification("Your Item Was Added To Cart Successfully !!"); // Display the notification
-                        addCartForm.reset();   // Clear the form
-                    })
-                    .catch(error => {
-                        console.error("Error:", error);
-                        alert("An Error Occurred While Adding To Cart.");
+                    .then(stockData => {
+                        console.log("inside data area");
+                        stockNameOptions.innerHTML = ""; // Clear existing options
+
+                        stockData.forEach(data => {
+                            const option = document.createElement("div");
+                            option.className = "dropdown-option";
+                            option.textContent = data.stockName;
+                            option.addEventListener("click", function () {
+                                stockIdInput.value = data.stockId; // Set the stock ID directly from the data object
+                                stockNameOptions.classList.remove("dropdown-content"); // Hide dropdown
+                            });
+                            stockNameOptions.appendChild(option);
+                        });
                     });
-            });
-        }
+            } else {
+                stockNameOptions.innerHTML = ""; // Clear options when closing dropdown
+            }
+        });
+
+
+        addCartForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            console.log("Inside listener cart if condition");
+
+
+            const stockId = document.getElementById("stockIdInput").value;
+            const orderQuantity = document.getElementById("orderQuantity").value;
+
+            const cartData = {
+                stockId: parseInt(stockId),
+                orderQuantity: parseInt(orderQuantity),
+            };
+
+            // Assuming you have an API endpoint to handle form submissions
+            fetch("http://localhost:8081/orders/add", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(cartData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    showNotification("Your Item Was Added To Cart Successfully !!"); // Display the notification
+                    addCartForm.reset();   // Clear the form
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("An Error Occurred While Adding To Cart.");
+                });
+        });
+    }
 
 
     if (showOrderForm) {
 
-               orderId.addEventListener("click", function (event) {
-               event.preventDefault(); // Prevent default behavior of input area
-               orderDataOptions.classList.toggle("dropdown-content");
+        orderId.addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent default behavior of input area
+            orderDataOptions.classList.toggle("dropdown-content");
 
-                    if (orderDataOptions.classList.contains("dropdown-content")) {
-                        fetch("http://localhost:8081/orders/showData")
-                            .then(response => response.json())
-                            .then(orderData => {
-                                console.log("inside order data area");
-                                orderDataOptions.innerHTML = ""; // Clear existing options
+            if (orderDataOptions.classList.contains("dropdown-content")) {
+                fetch("http://localhost:8081/orders/showData")
+                    .then(response => response.json())
+                    .then(orderData => {
+                        console.log("inside order data area");
+                        orderDataOptions.innerHTML = ""; // Clear existing options
 
-                                orderData.forEach(data => {
-                                    const option = document.createElement("div");
-                                    option.className = "dropdown-option";
-                                    option.innerHTML =   "Order Id: " + data.orderId + "<br>" +
-                                                         "Stock Name: " + data.stockNameData;
+                        orderData.forEach(data => {
+                            const option = document.createElement("div");
+                            option.className = "dropdown-option";
+                            option.innerHTML = "Order Id: " + data.orderId + "<br>" +
+                                "Stock Name: " + data.stockNameData;
 
 
-                                    option.addEventListener("click", function () {
-                                        orderId.value = data.orderId; // Set the stock ID directly from the data object
-                                        orderDataOptions.classList.toggle("dropdown-content"); // Hide dropdown
-                                    });
-                                    orderDataOptions.appendChild(option);
-                                });
+                            option.addEventListener("click", function () {
+                                orderId.value = data.orderId; // Set the stock ID directly from the data object
+                                orderDataOptions.classList.toggle("dropdown-content"); // Hide dropdown
                             });
-                    } else {
-                        orderDataOptions.innerHTML = ""; // Clear options when closing dropdown
-                    }
-                });
+                            orderDataOptions.appendChild(option);
+                        });
+                    });
+            } else {
+                orderDataOptions.innerHTML = ""; // Clear options when closing dropdown
+            }
+        });
 
         showOrderForm.addEventListener("submit", function (event) {
             event.preventDefault();

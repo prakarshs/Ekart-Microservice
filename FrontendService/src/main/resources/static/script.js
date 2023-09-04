@@ -15,6 +15,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const endSessionButton = document.getElementById('end-session');
     const startSessionButton = document.getElementById('start-session');
 
+    let flag = true;
+
     // Sending Button Clicked Info to a function which will send to the kafka producer
     document.getElementById('home').addEventListener('click', () => {
         interaction = 'Home Page';
@@ -89,18 +91,17 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (isSessionActive()) {
-            document.getElementById('end-session-li').style.display = 'block';
-            document.getElementById('start-session-li').style.display = 'none';
-            console.log("update time: ",updateTime);
-            console.log("start time: ",startTime);
-            updateTime = true;
-            updateTimeElapsed();
-            console.log('Session is active time');
-        } else {
-            document.getElementById('end-session-li').style.display = 'none';
-            document.getElementById('start-session-li').style.display = 'block';
-            console.log('Session is not active');
-        }
+        document.getElementById('end-session-li').style.display = 'block';
+        document.getElementById('start-session-li').style.display = 'none';
+        console.log("update time: ", updateTime);
+        console.log("start time: ", startTime);
+        updateTimeElapsed();
+        console.log('Session is active time');
+    } else {
+        document.getElementById('end-session-li').style.display = 'none';
+        document.getElementById('start-session-li').style.display = 'block';
+        console.log('Session is not active');
+    }
 
 
     // Function to check if a session is active
@@ -112,6 +113,41 @@ document.addEventListener("DOMContentLoaded", function () {
     startSessionButton.addEventListener('click', () => {
         startSession();
     });
+    function handleAcceptClickStart() {
+        interaction = 'Yes Button';
+        console.log("idhar aya hu");
+        sendUserInteractionToServer(interaction);
+
+        const confirmDialog = document.getElementById('BlockUIConfirm');
+
+        document.getElementById('end-session-li').style.display = 'block';
+        document.getElementById('start-session-li').style.display = 'none';
+        startTime = new Date(); // Set a new start time
+        localStorage.setItem(startTimeKey, startTime); // Saving start time in local storage
+        updateTime = true; // Start updating time when the button is pressed
+        updateTimeElapsed();
+        confirmDialog.style.display = 'none'; // Hide the confirmation dialog
+        document.getElementById('confirmSessionBtn').removeEventListener('click', handleAcceptClickStart);
+
+        }
+
+
+    function handleAcceptClickEnd() {
+            interaction = 'Yes Button';
+            console.log("idhar aya hu");
+            sendUserInteractionToServer(interaction);
+
+            const confirmDialog = document.getElementById('BlockUIConfirm');
+
+            document.getElementById('end-session-li').style.display = 'none';
+            document.getElementById('start-session-li').style.display = 'block';
+            updateTime = false; // Stop updating time when the button is pressed
+            localStorage.removeItem(startTimeKey); // Clear the stored startTime
+            confirmDialog.style.display = 'none'; // Hide the confirmation dialog
+            document.getElementById('confirmSessionBtn').removeEventListener('click', handleAcceptClickEnd);
+            }
+
+
 
     // Button To End Session
     endSessionButton.addEventListener('click', () => {
@@ -120,8 +156,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to start a new session
     function startSession() {
+        // Check if the session is already active
+        if (localStorage.getItem('sessionActive') === 'true') {
+            console.log('Session is already active.');
+            return;
+        }
         localStorage.setItem('sessionActive', 'true');
-        localStorage.setItem('sessionStartTime', new Date().toISOString());
 
         interaction = 'Start Session';
         sendUserInteractionToServer(interaction);
@@ -133,24 +173,11 @@ document.addEventListener("DOMContentLoaded", function () {
         confirmDialog.style.display = 'block';
 
         // When the user clicks "Yes, Accept," perform the start session actions
-        document.getElementById('confirmSessionBtn').addEventListener('click', () => {
-            interaction = 'Yes Button';
-            sendUserInteractionToServer(interaction);
+        document.getElementById('confirmSessionBtn').addEventListener('click', handleAcceptClickStart);
 
-
-            document.getElementById('end-session-li').style.display = 'block';
-            document.getElementById('start-session-li').style.display = 'none';
-            startTime = new Date(); // Set a new start time
-            localStorage.setItem(startTimeKey, startTime);// Saving start time in local storage
-            updateTime = true; // Start updating time when the button is pressed
-            updateTimeElapsed();
-            confirmDialog.style.display = 'none'; // Hide the confirmation dialog
-        });
         document.getElementById('cancelButton').addEventListener('click', () => {
-            interaction = 'Yes Button';
+            interaction = 'Cancel Button';
             sendUserInteractionToServer(interaction);
-
-
             confirmDialog.style.display = 'none';
         });
 
@@ -170,23 +197,13 @@ document.addEventListener("DOMContentLoaded", function () {
         // Display the confirmation dialog
         const confirmDialog = document.getElementById('BlockUIConfirm');
         confirmDialog.style.display = 'block';
-
+        flag=false;
         // When the user clicks "Yes, Accept," perform the end session actions
-        document.getElementById('confirmSessionBtn').addEventListener('click', () => {
-            interaction = 'Yes Button';
-            sendUserInteractionToServer(interaction);
+        document.getElementById('confirmSessionBtn').addEventListener('click', handleAcceptClickEnd);
 
-
-            document.getElementById('end-session-li').style.display = 'none';
-            document.getElementById('start-session-li').style.display = 'block';
-            updateTime = false; // Stop updating time when the button is pressed
-            localStorage.removeItem(startTimeKey); // Clear the stored startTime
-            confirmDialog.style.display = 'none'; // Hide the confirmation dialog
-        });
         document.getElementById('cancelButton').addEventListener('click', () => {
-            interaction = 'No Button';
+            interaction = 'Cancel Button';
             sendUserInteractionToServer(interaction);
-
 
             confirmDialog.style.display = 'none';
         });

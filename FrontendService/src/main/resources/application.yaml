@@ -6,4 +6,8 @@ spring:
     name: FRONTEND-SERVICE
   config:
     import: configserver:http://localhost:9296
-
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer

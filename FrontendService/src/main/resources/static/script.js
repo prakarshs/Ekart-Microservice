@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+
     const stockForm = document.getElementById("stripe-login");
     const reduceStockForm = document.getElementById("stripe-login2");
     const showStockForm = document.getElementById("stripe-login3");
@@ -14,8 +15,62 @@ document.addEventListener("DOMContentLoaded", function () {
     const endSessionButton = document.getElementById('end-session');
     const startSessionButton = document.getElementById('start-session');
 
+    // Sending Button Clicked Info to a function which will send to the kafka producer
+    document.getElementById('home').addEventListener('click', () => {
+                interaction = 'Home Page';
+                sendUserInteractionToServer(interaction);
+            });
+     document.getElementById('addStocks').addEventListener('click', () => {
+            interaction = 'Add Stocks';
+            sendUserInteractionToServer(interaction);
+        });
+     document.getElementById('reduceStocks').addEventListener('click', () => {
+                 interaction = 'Reduce Stocks';
+                 sendUserInteractionToServer(interaction);
+             });
+     document.getElementById('showStocks').addEventListener('click', () => {
+                 interaction = 'Show Stocks';
+                 sendUserInteractionToServer(interaction);
+             });
+
+
+     document.getElementById('addCart').addEventListener('click', () => {
+            interaction = 'Add Cart';
+            sendUserInteractionToServer(interaction);
+        });
+     document.getElementById('placeOrder').addEventListener('click', () => {
+                 interaction = 'Place Order';
+                 sendUserInteractionToServer(interaction);
+             });
+     document.getElementById('showOrder').addEventListener('click', () => {
+                 interaction = 'Show Order';
+                 sendUserInteractionToServer(interaction);
+             });
+
+
+
+    function sendUserInteractionToServer(interaction) {
+            // Make an HTTP POST request to your backend service
+            fetch('http://localhost:8086/journey', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: interaction,//plain string body
+            })
+            .then(data => {
+                console.log('Interaction sent to server:', interaction);
+            })
+            .catch(error => {
+                console.error('Error sending interaction to server:', error);
+            });
+    }
+
+
+
     const startTimeKey = 'startTime';
     const updateTimeKey = 'updateTime';
+    console.log("here before time etc etc")
 
     // Check if there is a start time stored in localStorage
     let startTime = localStorage.getItem(startTimeKey);
@@ -48,6 +103,10 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('start-session-li').style.display = 'none';
     // Event listener for stopping the timer
     endSessionButton.addEventListener('click', () => {
+        interaction = 'End Session';
+        sendUserInteractionToServer(interaction);
+
+
         console.log("in the end session dialog");
         // Display the confirmation dialog
         const confirmDialog = document.getElementById('BlockUIConfirm');
@@ -55,6 +114,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // When the user clicks "Yes, Accept," perform the end session actions
         document.getElementById('confirmSessionBtn').addEventListener('click', () => {
+            interaction = 'Yes Button';
+            sendUserInteractionToServer(interaction);
+
+
             document.getElementById('end-session-li').style.display = 'none';
             document.getElementById('start-session-li').style.display = 'block';
             updateTime = false; // Stop updating time when the button is pressed
@@ -62,12 +125,20 @@ document.addEventListener("DOMContentLoaded", function () {
             confirmDialog.style.display = 'none'; // Hide the confirmation dialog
         });
         document.getElementById('cancelButton').addEventListener('click', ()=>{
+            interaction = 'No Button';
+            sendUserInteractionToServer(interaction);
+
+
             confirmDialog.style.display = 'none';
         });
 
     });
 
     startSessionButton.addEventListener('click', () => {
+            interaction = 'Start Session';
+            sendUserInteractionToServer(interaction);
+
+
             console.log("in the start session dialog");
             // Display the confirmation dialog
             const confirmDialog = document.getElementById('BlockUIConfirm');
@@ -75,6 +146,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // When the user clicks "Yes, Accept," perform the start session actions
             document.getElementById('confirmSessionBtn').addEventListener('click', () => {
+                interaction = 'Yes Button';
+                sendUserInteractionToServer(interaction);
+
+
                 document.getElementById('end-session-li').style.display = 'block';
                 document.getElementById('start-session-li').style.display = 'none';
                 startTime = new Date(); // Set a new start time
@@ -82,6 +157,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 confirmDialog.style.display = 'none'; // Hide the confirmation dialog
             });
             document.getElementById('cancelButton').addEventListener('click', ()=>{
+                interaction = 'Yes Button';
+                sendUserInteractionToServer(interaction);
+
+
                 confirmDialog.style.display = 'none';
             });
 
@@ -89,7 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    fetch("http://localhost:8084/users/show/")
+    fetch("http://localhost:8084/users/show")
     .then(response => response.json())
         .then(userData => {
             nameElement.textContent = `${userData.userName}`;
@@ -105,8 +184,16 @@ document.addEventListener("DOMContentLoaded", function () {
             event.preventDefault();
 
             const stockName = document.getElementById("stockName").value;
+            interaction = 'Stock Name Added: ${stockName}';
+            sendUserInteractionToServer(interaction);
+
             const stockPrice = document.getElementById("stockPrice").value;
+            interaction = 'Stock Price Added: ${stockPrice} ';
+            sendUserInteractionToServer(interaction);
+
             const stockQuantity = document.getElementById("stockQuantity").value;
+            interaction = 'Stock Quantity Added: ${stockQuantity} ';
+            sendUserInteractionToServer(interaction);
 
             const stockData = {
                 stockName: stockName,
@@ -131,6 +218,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.error("Error:", error);
                     alert("An error occurred while adding the stock.");
                 });
+
+            interaction = 'Stock Details Submitted';
+            sendUserInteractionToServer(interaction);
+
         });
     }
     if (reduceStockForm) {

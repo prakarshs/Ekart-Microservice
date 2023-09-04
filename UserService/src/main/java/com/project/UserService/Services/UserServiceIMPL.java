@@ -65,7 +65,7 @@ public class UserServiceIMPL implements UserService {
     @Override
     public UserResponse showLatestSession() {
         Optional<Session> latestSession = sessionRepository.findFirstByOrderByUsersIdDesc();
-        log.info("SESSION IS:{}",latestSession);
+
         UserResponse userResponse = new UserResponse();
         latestSession.ifPresent(session -> {
             userResponse.setMessage("THIS IS THE LATEST SESSION");

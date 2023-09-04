@@ -230,16 +230,13 @@ document.addEventListener("DOMContentLoaded", function () {
             event.preventDefault();
 
             const stockName = document.getElementById("stockName").value;
-            interaction = 'Stock Name Added: ' + stockName;
-            sendUserInteractionToServer(interaction);
+
 
             const stockPrice = document.getElementById("stockPrice").value;
-            interaction = 'Stock Price Added: ' + stockPrice;
-            sendUserInteractionToServer(interaction);
+
 
             const stockQuantity = document.getElementById("stockQuantity").value;
-            interaction = 'Stock Quantity Added: ' + stockQuantity;
-            sendUserInteractionToServer(interaction);
+
 
             const stockData = {
                 stockName: stockName,
@@ -289,6 +286,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             option.textContent = data.stockName;
                             option.addEventListener("click", function () {
                                 stockIdInput.value = data.stockId; // Set the stock ID directly from the data object
+
                                 stockNameOptions.classList.remove("dropdown-content"); // Hide dropdown
                             });
                             stockNameOptions.appendChild(option);

@@ -1,8 +1,12 @@
 package com.project.UserService.Configs;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
 
 import java.util.ArrayList;
@@ -20,13 +24,16 @@ public class KafkaConfigs {
 
     @KafkaListener(topics = "User-Journey", groupId = "group-02")
     public void receiveUserInteraction(String value) {
-        System.out.println(value);
+
         if (!sessionActive) {
             // Check if the received value indicates the start of a session
             if (value.equals("Start Session")) {
-                sessionStarted = true;
-            } else {
-                sessionStarted = false;
+                // Start a new session
+                sessionActive = true;
+                sessionStarted = false; // Reset sessionStarted
+                endSession = false;
+                messageWindow.clear();
+                log.info("Session started.");
             }
         } else {
             // Check if the received value indicates the end of a session
@@ -35,37 +42,26 @@ public class KafkaConfigs {
             } else if (value.equals("Yes Button") && endSession) {
                 // End the session when "Yes Button" follows "End Session"
                 endSession();
+            } else if (value.equals("Yes Button") && !sessionStarted) {
+                // Start the session when "Yes Button" follows "Start Session"
+                sessionStarted = true;
+                log.info("Session started.");
             } else {
                 // Add the received value to the buffer
                 messageWindow.add(value);
-                System.out.println("Received message: " + value);
+                log.info("Added message to messageWindow: {}", value);
             }
         }
 
-        // Check if a session has started and we received a "Yes Button"
-        if (sessionStarted && value.equals("Yes Button")) {
-            startSession();
-        }
 
-        for (String message : messageWindow) {
-            log.info("The Printing area");
-            System.out.print(message+", ");
-        }
-    }
-
-    private void startSession() {
-        // Start a new session
-        messageWindow.clear();
-        sessionActive = true;
-        sessionStarted = false;
-        endSession = false;
-        System.out.println("Session started.");
     }
 
     private void endSession() {
         // End the session and stop adding to the list
         sessionActive = false;
-        System.out.println("Session ended.");
-    }
+        sessionStarted = false;
+        endSession = false;
+        log.info("Session ended.");
 
+    }
 }

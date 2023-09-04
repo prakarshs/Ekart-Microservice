@@ -1,21 +1,29 @@
 package com.project.UserService.Services;
 
+import com.project.UserService.Configs.KafkaConfigs;
 import com.project.UserService.Entities.Session;
 import com.project.UserService.Entities.User;
 import com.project.UserService.Models.UserRequest;
 import com.project.UserService.Models.UserResponse;
 import com.project.UserService.Repositories.SessionRepository;
 import com.project.UserService.Repositories.UserRepository;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @Log4j2
+@Data
+@AllArgsConstructor
 public class UserServiceIMPL implements UserService {
+    @Autowired
+    private KafkaConfigs kafkaConfigs;
 
     @Autowired
     private UserRepository userRepository;
@@ -48,6 +56,7 @@ public class UserServiceIMPL implements UserService {
 
     @Override
     public UserResponse addSession(UserRequest userRequest) {
+
         log.info("CREATING SESSION...");
         Session session = Session.builder()
                 .userName(userRequest.getUserName())
@@ -74,5 +83,7 @@ public class UserServiceIMPL implements UserService {
         });
         return userResponse;
     }
+
+
 }
 

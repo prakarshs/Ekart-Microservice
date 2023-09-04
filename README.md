@@ -96,12 +96,11 @@ Project Link: [Ekart-Microservice](https://github.com/prakarshs/Ekart-Microservi
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
 [license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
 [product-screenshot]: images/demo.gif
 [SpringBoot]: https://img.shields.io/badge/SpringBoot-32CD32?style=for-the-badge&logo=springBoot&logoColor=white
 [JavaScript]: https://img.shields.io/badge/JavaScript-FFEA00?style=for-the-badge&logo=javaScript&logoColor=black
 [Docker]: https://img.shields.io/badge/Docker-0096FF?style=for-the-badge&logo=docker&logoColor=white
-[Apache]: https://img.shields.io/badge/Apache-DE3163?style=for-the-badge&logo=apache&logoColor=white
+[Apache]: https://img.shields.io/badge/Apache%20Kafka-DE3163?style=for-the-badge&logo=apache&logoColor=white
 [MySql]: https://img.shields.io/badge/MySql-F28C28?style=for-the-badge&logo=mysql&logoColor=white
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/

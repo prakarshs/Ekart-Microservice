@@ -5,9 +5,9 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <div href="https://github.com/prakarshs/Ekart-Microservice">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
+  </div>
 
   <h3 align="center">Ekart Microservices</h3>
 
@@ -30,31 +30,16 @@ Ekart is an innovative microservices project that transforms the world of online
 - Frontend Services
 - User Service
 
-## Microservices Architecture
+## Our Standouts
 
-We've adopted a "Database per Service" architecture to provide autonomy and scalability. Microservices are being adopted widely since they offer scalability, flexibility, and the ability to develop and deploy software components independently, which accelerates innovation and agility in modern software development.
-
-## Key Features
-
-- **Cloud API Gateway (SpringGateway)**: Efficiently routes requests between services, ensuring smooth communication.
-- **Circuit Breaker (Resilience4j)**: Implemented in each service and the gateway for fault tolerance and reliability.
-- **Okta Integration**: Industry-standard security is guaranteed through Okta integration in the gateway.
-
-## Our Technology Stack
-
+- **Event Streaming**: The intergation of Kafka with my project ensures the realtime recording and processing of user's session activity (interactions-clicks-movement to different webpages)
+- **PDF Generation**: Using Itext and OpenPdf our project generates a very sophisticated and elegant user-interaction-journey with the website for that particular session which was received by the kafka consumer.
+- **Okta Security**: Okta facilitates our project with industry standard security parameters ranging from user authorization, user authentication etc.
+- **Fault Tolerance (Resilience4j)**: The Cloud gateway not only load balances but also incorporates a Circuit Breaker which multiplies reliability and error handling.
 - **Service Discovery**: Eureka ensures smooth service discovery.
 - **Centralized Configurations**: Config Server pulling from my github repo centralizes configurations.
-- **Data Storage**: MySQL stores data reliably.
 - **Traceability**: Docker and Zipkin Sleuth enhance traceability.
-- **Frontend**: Our frontend is built with HTML, CSS, and JavaScript, offering a seamless shopping experience.
 - **Communication**: RestTemplate, OpenFeign & WebClient in Cloud Gateway (since gateway is a WebFlux/Spring Reactive Web service) handle communication between services, making Ekart a comprehensive solution for modern commerce.
-
-
-Ekart is not just about convenience; it's also about ensuring the utmost security, scalability, and fault tolerance. With Cloud API Gateway, circuit breakers, Okta integration, and a modern tech stack, we provide an unparalleled shopping experience.
-
-
-
-
 ## Built With
 
 Our project's core lies in **Maven Spring Boot** and the FrontEnd is built on vanilla **HTML, CSS & JavaScript.** And the communication between the services is provided by Apache Kafka.
@@ -63,7 +48,42 @@ Our project's core lies in **Maven Spring Boot** and the FrontEnd is built on va
 * ![JavaScript]
 * ![Okta]
 * ![Apache]
+* ![Openpdf]
 * ![MySql]  
+
+
+## Microservices Architecture
+
+We've adopted a "Database per Service" architecture to provide autonomy and scalability. Microservices are being adopted widely since they offer scalability, flexibility, and the ability to develop and deploy software components independently, which accelerates innovation and agility in modern software development.
+
+- **Stock Services:**
+Stock Services is responsible for managing the inventory of products available in your Ekart application. They keep track of product quantities, availability, pricing, and related information. Stock Services help ensure that customers can view and purchase products that are in stock.
+
+- **Order Services:**
+Order Services handle the process of placing and managing customer orders. They facilitate the addition of carts, order processing, order confirmation and display. The order is created only when its added to cart; and completed when payment is successful. Order Services ensure that customer orders are accurately recorded and processed.
+
+
+- **Payment Services:**
+Payment Services are responsible for handling payment processing within your Ekart application. The payment is initiated only when the order is created. Payment Services help ensure smooth and secure payment experiences for customers.
+
+- **Frontend Services:**
+Frontend Services represent the user interface and presentation layer of your Ekart application. They include web pages, zappy animation and interactive dropdown elements that customers use to browse products and place orders because memorizing stockId and orderId is arduous. Frontend Services are also acting as **Kafka producers** which is responsible for recording and registering the user movement in the website.
+
+- **User Service:**
+User Service focuses on managing user accounts and session info's. It acts as the **Kafka Consumer** which handles the info from Frontend Service and displays the journey of a user in his session via a pretty schematic downloadable PDF.
+
+#### Salient Microservices
+
+-  **Cloud API Gateway (SpringGateway)**
+This handles the efficient routing of requests between services, ensuring smooth communication. The **Circuit Breaker** in it also provides a layer of Fault Tolerance. **Okta Security** integrated in this service is responsible for providing ndustry-standard security
+-  **Eureka Service Registry**
+Our Service Discovery facilitates automatic service registration, discovery, and load balancing, ensuring scalability and fault tolerance in our microservices architecture.
+-  **Config Server**
+Our Config Server centralizes and manages configuration settings, supporting dynamic updates without service redeployment.
+
+
+
+Ekart is not just about convenience; it's also about ensuring the utmost security, scalability, and fault tolerance. With Cloud API Gateway, circuit breakers, Okta integration, and a modern tech stack, we provide an unparalleled shopping experience.
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -101,6 +121,7 @@ Project Link: [Ekart-Microservice](https://github.com/prakarshs/Ekart-Microservi
 [JavaScript]: https://img.shields.io/badge/JavaScript-FFEA00?style=for-the-badge&logo=javaScript&logoColor=black
 [Docker]: https://img.shields.io/badge/Docker-0096FF?style=for-the-badge&logo=docker&logoColor=white
 [Apache]: https://img.shields.io/badge/Apache%20Kafka-DE3163?style=for-the-badge&logo=apache&logoColor=white
+[Openpdf]: https://img.shields.io/badge/OpenPDF-F3F2ED?style=for-the-badge&logo=adobe&logoColor=DE3163
 [MySql]: https://img.shields.io/badge/MySql-F28C28?style=for-the-badge&logo=mysql&logoColor=white
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/

@@ -9,6 +9,16 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: USER-SERVICE
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/users/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: userCircuitBreaker
+                fallbackUri: forward:/userServiceFallback
+
         - id: STOCK-SERVICE
           uri: lb://STOCK-SERVICE
           predicates:
@@ -42,7 +52,7 @@ spring:
         - id: FRONTEND-SERVICE
           uri: lb://FRONTEND-SERVICE
           predicates:
-            - Path=/**
+            - Path=/ekart/**
           filters:
             - name: CircuitBreaker
               args:

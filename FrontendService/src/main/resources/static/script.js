@@ -93,10 +93,8 @@ document.addEventListener("DOMContentLoaded", function () {
     if (isSessionActive()) {
         document.getElementById('end-session-li').style.display = 'block';
         document.getElementById('start-session-li').style.display = 'none';
-        console.log("update time: ", updateTime);
-        console.log("start time: ", startTime);
         updateTimeElapsed();
-        console.log('Session is active time');
+        console.log('Session is active');
     } else {
         document.getElementById('end-session-li').style.display = 'none';
         document.getElementById('start-session-li').style.display = 'block';
@@ -131,19 +129,71 @@ document.addEventListener("DOMContentLoaded", function () {
 
         }
 
+    function handleAcceptClickStartPdf() {
+
+            const confirmDialogPdf = document.getElementById('BlockUIConfirmPdf');
+
+                    // Make an HTTP POST request to your backend service
+                    fetch('http://localhost:8084/users/generatePdf', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.blob(); // Convert the response to a Blob
+                        })
+                        .then(blob => {
+                            // Create a Blob URL for the binary data
+                            const blobUrl = URL.createObjectURL(blob);
+
+                            // Create a download link
+                            const downloadLink = document.createElement('a');
+                            downloadLink.href = blobUrl;
+                            downloadLink.download = 'myJourney.pdf'; // Specify the desired filename
+                            downloadLink.style.display = 'none'; // Hide the link
+
+                            // Trigger a click event on the download link
+                            document.body.appendChild(downloadLink);
+                            downloadLink.click();
+
+                            // Clean up by revoking the Blob URL
+                            URL.revokeObjectURL(blobUrl);
+
+                            console.log('PDF download initiated');
+                        })
+                        .catch(error => {
+                            console.error('Error downloading PDF:', error);
+                        });
+
+            confirmDialogPdf.style.display = 'none'; // Hide the confirmation dialog
+            document.getElementById('confirmSessionBtn').removeEventListener('click', handleAcceptClickStartPdf);
+
+            }
+
 
     function handleAcceptClickEnd() {
             interaction = 'Yes Button';
-            console.log("idhar aya hu");
             sendUserInteractionToServer(interaction);
 
             const confirmDialog = document.getElementById('BlockUIConfirm');
+            const confirmDialogPdf = document.getElementById('BlockUIConfirmPdf');
 
             document.getElementById('end-session-li').style.display = 'none';
             document.getElementById('start-session-li').style.display = 'block';
             updateTime = false; // Stop updating time when the button is pressed
             localStorage.removeItem(startTimeKey); // Clear the stored startTime
             confirmDialog.style.display = 'none'; // Hide the confirmation dialog
+
+            // show The Pdf Dialog
+            confirmDialogPdf.style.display = 'block';
+            document.getElementById('confirmSessionBtnPdf').addEventListener('click', handleAcceptClickStartPdf);//if clicked yes
+            document.getElementById('cancelButtonPdf').addEventListener('click', () => {
+                        confirmDialogPdf.style.display = 'none';
+                    });
             document.getElementById('confirmSessionBtn').removeEventListener('click', handleAcceptClickEnd);
             }
 

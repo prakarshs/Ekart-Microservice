@@ -31,5 +31,11 @@ public class FallbackController {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
                 .body("Frontend Service Is Not Available. Please Try Again Later.");
     }
+
+    @GetMapping("/userServiceFallback")
+    public ResponseEntity<String> userfallback() {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body("User Service Is Not Available. Please Try Again Later.");
+    }
     }
 

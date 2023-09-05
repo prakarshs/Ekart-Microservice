@@ -110,11 +110,11 @@ public class UserServiceIMPL implements UserService {
         Font footeremailFont = FontFactory.getFont(FontFactory.HELVETICA_OBLIQUE, 10, new Color(0,0,129));
 
         // Element Declaration
-        Image logo = Image.getInstance("D:/Microservices/Ekart/UserService/src/main/resources/images/logo.png");
+        Image logo = Image.getInstance(getClass().getResource("/images/logo.png"));
         logo.setAlignment(Element.ALIGN_CENTER);
         logo.scaleToFit(90, 90);
 
-        Image design = Image.getInstance("D:/Microservices/Ekart/UserService/src/main/resources/images/design.png");
+        Image design = Image.getInstance(getClass().getResource("/images/design.png"));
         design.scaleToFit(300, 280);
 
         Paragraph subtitle = new Paragraph("Ekart Microservice Project",subtitleFont);

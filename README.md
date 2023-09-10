@@ -30,6 +30,11 @@ Ekart is an innovative microservices project that transforms the world of online
 - Frontend Services
 - User Service
 
+## Demo Of Project
+### Kafka User Journey Track And Certificate Generation
+https://github.com/prakarshs/Ekart-Microservice/assets/138369731/2ff54271-dd37-42cf-b1ad-dfcb08c12845
+
+
 ## Our Standouts
 
 - **Event Streaming**: The intergation of Kafka with my project ensures the realtime recording and processing of user's session activity (interactions-clicks-movement to different webpages)

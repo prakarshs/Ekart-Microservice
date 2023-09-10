@@ -36,6 +36,10 @@ Ekart is an innovative microservices project that transforms the world of online
   <img src="https://github.com/prakarshs/Ekart-Microservice/assets/138369731/e8bf5c3f-8a84-4dfd-9c67-866dce2465e1" alt="Kafka-Demo">
 </div>
 
+### Full Project Demo
+https://github.com/prakarshs/Ekart-Microservice/assets/138369731/35ecf712-2bc5-4a86-b630-0e0e31f3b4c9
+
+
 
 ## Our Standouts
 

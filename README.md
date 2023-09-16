@@ -42,7 +42,7 @@ https://github.com/prakarshs/Ekart-Microservice/assets/138369731/35ecf712-2bc5-4
 
 ## Architecture Of The Project
 <div align="center">
- <img src="https://github.com/prakarshs/Ekart-Microservice/assets/138369731/449ccd1a-bfc9-43b0-b5ec-e513b7613d3f" alt="Architecture">
+ <img src="https://github.com/prakarshs/Ekart-Microservice/assets/138369731/0bfd3324-eba0-4cfe-bf94-46a23a7172a6" alt="Architecture">
 </div>
 
 ## Our Standouts
